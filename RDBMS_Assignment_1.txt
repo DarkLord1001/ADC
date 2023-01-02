@@ -1,0 +1,137 @@
+Q1
+create table Student(sreg_no integer primary key, name varchar(30), class varchar(10));
+create table Competition(c_no integer primary key, name varchar(20),type varchar(15) check(type in('academics','sports')));
+create table stu_com(sreg_no integer,foreign key(sreg_no) references Student(sreg_no) on delete cascade on update set null, c_no integer,foreign key(c_no) references Competition(c_no) on delete cascade on update set null,rank integer, year integer);
+
+insert into student values(1,'sahil','MSC') ;
+insert into student values(2,'raj','MSC');
+insert into student values(3,'ram','5th');
+insert into student values(4,'mohit','5th');
+
+insert into competition values(101,'running','sports');
+insert into competition values(102,'swimming','academics');
+insert into competition values(103,'cricket','sports');
+insert into competition values(104,'shooting','academics');
+
+insert into stu_com values(1,101,1,1996);
+insert into stu_com values(2,101,1,2001);
+insert into stu_com values(4,102,1,1995);
+insert into stu_com values(1,102,1,1999);
+insert into stu_com values(3,103,2,2001);
+insert into stu_com values(2,103,2,1995);
+insert into stu_com values(4,104,3,1975);
+insert into stu_com values(1,104,1,2002);
+
+a)
+1. select name from competition;
+2.  select name from Student where sreg_no =some(select sreg_no from stu_com where rank=1 and 1995 < year and year < 2005 and c_no =(select c_no from Competition where name='running'));
+3.  select name from student where sreg_no=(select sreg_no from stu_com sc group by sreg_no having count(sreg_no)=(select max (mycount) from (select sreg_no,count(sreg_no) mycount from stu_com sc group by sreg_no) as x limit 1));
+4. select count(name) from competition where type='sports';
+5.select distinct s.* from student s, stu_com sc where s.sreg_no = sc.sreg_no;
+
+b)
+1.  create procedure countcompi(c_name varchar(20)) language sql as $$ select count(name) from competition where type=c_name $$;
+     call countcompi('academics');
+     call countcompi('sports');
+2.  create procedure cname(years integer) language sql as $$ select name from competition where c_no=some(select c_no from stu_com where year=years) $$;
+     call cname(2001);
+
+c)
+1. create function count_type(ctype varchar(10)) returns integer language sql as $$ select count(name) from competition where type=ctype $$;
+    select count_type('sports');
+2. create function count_win(sname varchar(10)) returns integer language sql as $$ select count(sreg_no) from stu_com where rank=1 and year=2001 and sreg_no=some(select sreg_no from student where name=sname) $$;
+    select count_win('raj');
+
+d)
+1. declare test_cur cursor WITH HOLD for select * from competition where c_no=some(select sc.c_no from stu_com sc, student s where sc.rank=1 and sc.year=1995 and s.class='5th');
+2. 
+
+e)
+1.  
+delimiter $$
+create trigger update_year
+before insert on student_competition
+for each row
+begin
+if new.year > year(now()) then
+set new.year = year(now());
+end if;
+end$$
+delimiter ;
+ 
+2.
+ delimiter $$
+create trigger update_tot_prize
+after insert on student_competition
+for each row
+begin
+if new.rank = 1 then
+update tot_prize set no_of_prizes = no_of_prizes + 1 where stud_reg_no = new.sreg_no;
+end if;
+end$$
+delimiter ;
+
+f)
+1. create view v1 AS select name,type from competition order by type;
+    select * from v1;
+2. create view v2 AS select distinct s.name as b, s.class, co.name,sc.rank , sc.year from student s, competition co, stu_com sc where s.sreg_no=sc.sreg_no and co.c_no=sc.c_no order by s.name;
+    select * from v2;
+
+
+
+
+2)
+create table customer(cust_no integer primary key,cust_name varchar(20),cust_street varchar(15), cust_city varchar(20));
+create table branch(branch_no integer primary key, branch_name varchar(20) not null,branch_city varchar(20));
+create table account(acc_no integer primary key, acc_type varchar(10),balance numeric(8,2),cust_no integer,foreign key(cust_no) references customer(cust_no) on delete cascade on update set null,branch_no integer,foreign key(branch_no) references branch(branch_no) on delete cascade on update set null);
+create table loan(loan_no integer primary key, loan_amt numeric(9,2),no_of_years integer,cust_no integer,foreign key(cust_no) references customer(cust_no) on delete cascade on update set null,branch_no integer,foreign key(branch_no) references branch(branch_no) on delete cascade on update set null);
+
+insert into customer values(1,'Sahil','MG road','nagar');
+insert into customer values(2,'Raj','JM road','pune');
+insert into customer values(3,'Sachin','HR road','pimpri');
+insert into customer values(4,'Ram','ABC road','CIDCO');
+insert into customer values(5,'Rohit','MG road','mumbai');
+insert into customer values(6,'Sohan','JM road','sindhudurg');
+
+insert into branch values(101,'pimpri branch','pimpri');
+insert into branch values(102,'nagar branch','nagar');
+insert into branch values(103,'CIDCO branch','CIDCO');
+insert into branch values(104,'sadashiv branch','sadashiv peth');
+
+insert into account values(10,'saving',4000,1,101);
+insert into account values(20,'deposit',7000,2,102);
+insert into account values(30,'saving',10000,5,103);
+insert into account values(40,'deposit',2000,6,104);
+
+insert into loan values(11,20000,2,2,101);
+insert into loan values(22,30000,4,3,102);
+insert into loan values(33,45000,3,6,103);
+insert into loan values(44,10000,2,5,104);
+
+
+a)
+ 1.select c.cust_name from customer c, loan l where l.loan_amt > 10000 and c.cust_no=l.cust_no;
+ 2.select c.cust_name from customer c,account a where c.cust_no=a.cust_no except select c.cust_name from customer c,loan l where c.cust_no=l.cust_no;
+ 3.select c.cust_name from customer c,account a where c.cust_no=a.cust_no intersect select c.cust_name from customer c,loan l where c.cust_no=l.cust_no;
+ 4.select cust_name from customer where cust_no=some(select l.cust_no from loan l,branch b where b.branch_name='pimpri branch' and l.branch_no=b.branch_no);
+ 5.select c.cust_name from customer c, account a where a.acc_type='saving' and a.cust_no=c.cust_no;
+ 6.select sum(l.loan_amt) from loan l, branch b where b.branch_name='nagar branch' and l.branch_no=b.branch_no;
+ 7.select c.cust_name from customer c, loan l,branch b where c.cust_city=b.branch_city and c.cust_no=l.cust_no;
+
+b)
+ 1.create procedure transfer() language sql as $$ update account set balance=balance+1000 where acc_no=20; update account set balance=balance-1000 where acc_no=10;$$;
+    call transfer()
+ 2.
+
+c)
+ 1. create function totalloan(branchname varchar(10)) returns integer language sql as $$ select sum(l.loan_amt) from loan l, branch b where b.branch_no=l.branch_no and b.branch_name=branchname; $$;
+     select totalloan('CIDCO branch');
+ 2. create function countcust(branchname varchar(10)) returns integer language sql as $$ select count(c.cust_name) from customer c, branch b , loan l where b.branch_no=l.branch_no and c.cust_no=l.cust_no and b.branch_name=branchname; $$;
+     select countcust('CIDCO branch');
+
+
+f)
+ 1. create view v3 AS select c.cust_no as cn,c.cust_name,c.cust_street,c.cust_city ,a.* from customer c, account a where c.cust_no=a.cust_no;
+     select * from v3;
+ 2. create view v4 AS select l.* from loan l,branch b where b.branch_name='sadashiv branch' and l.branch_no=b.branch_no;
+     select * from v4;
