@@ -1,0 +1,169 @@
+
+Insert Value in film ::
+db.film.insert({"filmid":1,"title":"dabanggg","r_year":"2018","genre":["drama","romance","action"],"actor":{"FN":"Salman","LN":"Khan"},"director":{"FN":'arbaj','LN':'khan'},"RD":{"PR":['daund','pune','dharashiv','nagar'],"DR":["11-3-2018","15-3-2018"],"rating":5}})
+WriteResult({ "nInserted" : 1 })
+
+ db.film.insert({"filmid":2,"title":"KGF","r_year":"2014","genre":["SCI-FI","romance","action"],"actor":{"FN":"Yash","LN":"Gowda"},"director":{"FN":'prashanth','LN':'Neel'},"RD":{"PR":['Maharashtra','Kerala','Karnataka','Gujrat'],"DR":["11-3-2014","15-3-2014"],"rating":10}})
+WriteResult({ "nInserted" : 1 })
+
+ db.film.insert({"filmid":3,"title":"KGF2","r_year":"2021","genre":["SCI-FI","romance","action"],"actor":{"FN":"Yash","LN":"Gowda"},"director":{"FN":'prashanth','LN':'Neel'},"RD":{"PR":['Maharashtra','Kerala','Karnataka','Gujrat'],"DR":["11-3-2021","15-3-2021"],"rating":10}})
+WriteResult({ "nInserted" : 1 })
+
+ db.film.insert({"filmid":4,"title":"Avatar","r_year":"2009","genre":["SCI-FI","romance","emotional"],"actor":{"FN":"Mayuresh","LN":"Pawashe"},"director":{"FN":'Sahil','LN':'Kokare'},"RD":{"PR":['Maharashtra','Kerala','Karnataka','Gujrat'],"DR":["11-3-2021"],"rating":10}})
+WriteResult({ "nInserted" : 1 })
+
+ db.film.insert({"filmid":5,"title":"Redy","r_year":"2010","genre":["Comedy","romance","emotional"],"actor":{"FN":"Salman","LN":"Khan"},"director":{"FN":'Mayuresh','LN':'Pawashe'},"RD":{"PR":['Maharashtra','Kerala','Karnataka','Gujrat'],"DR":["11-3-2021","12-12-2021"],"rating":02}})
+WriteResult({ "nInserted" : 1 })
+
+ db.film.insert({"filmid":6,"title":"DJ","r_year":"2014","genre":["Comedy","romance","emotional"],"actor":{"FN":"Alia","LN":"Bhatt","FN":"Allu","LN":"Arjun"},"director":{"FN":'Ram','LN':'Charan'},"RD":{"PR":['Maharashtra','Kerala','Karnataka','Gujrat'],"DR":["11-3-2014"],"rating":02}})
+WriteResult({ "nInserted" : 1 })
+
+
+ db.film.insert({"filmid":7,"title":"Bramahstra","r_year":"2019","genre":["Comedy","romance","Faltugiri"],"actor":{"FN":"Alia","LN":"Bhatt","FN":"Allu","LN":"Arjun"},"director":{"FN":'Rohit','LN':'Shetty'},"RD":{"PR":['Maharashtra','Kerala','Karnataka','Gujrat'],"DR":["19-8-2019"],"rating":05}})
+WriteResult({ "nInserted" : 1 })
+
+ db.film.insert({"filmid":8,"title":"Kantara","r_year":"2022","genre":["Thrillar","romance","Action"],"actor":{"FN":"Rishab","LN":"Shetty"},"director":{"FN":'Rishab','LN':'Shetty'},"RD":{"PR":['Maharashtra','Kerala','Karnataka','Gujrat'],"DR":["22-3-2022"],"rating":10}})
+WriteResult({ "nInserted" : 1 })
+ db.film.insert({"filmid":11,"title":"Endgame","r_year":"2020","genre":["Thrillar","Advanture","Action"],"actor":{"FN":"Robert","LN":"Downy_junior"},"director":{"FN":'Arya','LN':'Kale'},"RD":{"PR":['Maharashtra','Kerala','Karnataka','Gujrat'],"DR":["22-3-2022"],"rating":3000}})
+WriteResult({ "nInserted" : 1 })
+
+Insert Value in Actor::
+db.actor.insert({"a_id":101,"f_name":"Salman","l_name":"Khan","address":{"street":"Ghole_road","city":"pune","state":"maharashtra","country":"india","pin_code":411052},"contact_details":{"email_id":"salman@deer.com","ph_no":727363746},"age":60})
+WriteResult({ "nInserted" : 1 })
+> db.actor.insert({"a_id":102,"f_name":"Akshay","l_name":"Kumar","address":{"street":"FC_road","city":"pune","state":"maharashtra","country":"india","pin_code":411052},"contact_details":{"email_id":"akshay@gmail.com","ph_no":89968424},"age":50})
+WriteResult({ "nInserted" : 1 })
+> db.actor.insert({"a_id":102,"f_name":"Alia","l_name":"Bhatt","address":{"street":"JM_road","city":"pune","state":"maharashtra","country":"india","pin_code":411052},"contact_details":{"email_id":"akshay@gmail.com","ph_no":856559424},"age":40})
+WriteResult({ "nInserted" : 1 })
+> db.actor.insert({"a_id":103,"f_name":"Kiara","l_name":"Adwani","address":{"street":"GT_road","city":"pune","state":"maharashtra","country":"india","pin_code":411052},"contact_details":{"email_id":"kiara@gmail.com","ph_no":853259424},"age":30})
+WriteResult({ "nInserted" : 1 })
+
+
+1. Add a value to the rating of the film whose title starts with "T".
+ db.film.find({title:{$regex:"T"}}).pretty()
+{
+        "_id" : ObjectId("63aff311cf7ed38e53b207e8"),
+        "filmid" : 9,
+        "title" : "Tango_Charlie",
+        "r_year" : "1996",
+        "genre" : [
+                "Thrillar",
+                "Advanture"
+        ],
+        "actor" : {
+                "FN" : "Dhanush",
+                "LN" : "Shetty"
+        },
+        "director" : {
+                "FN" : "Rishab",
+                "LN" : "Shetty"
+        },
+        "RD" : {
+                "PR" : [
+                        "Maharashtra",
+                        "Kerala",
+                        "Karnataka",
+                        "Gujrat"
+                ],
+                "DR" : [
+                        "22-3-2022"
+                ],
+                "rating" : 10
+        }
+}
+
+
+2. Add an actor named "Dhanush" in the „Actor‟ collection. Also add the details of the film in „Film‟ collection in which this actor has acted in. 
+
+ db.actor.insert({"a_id":104,"f_name":"Dhanush","l_name":"Raj","address":{"street":"Salman_deer_road","city":"pune","state":"maharashtra","country":"india","pin_code":411052},"contact_details":{"email_id":"dhanush@gmail.com","ph_no":993259424},"age":45})
+WriteResult({ "nInserted" : 1 })
+
+
+
+ db.film.insert({"filmid":10,"title":"Mari2","r_year":"2017","genre":["Thrillar","Advanture","Action"],"actor":{"FN":"Dhanush","LN":"Raj"},"director":{"FN":'Rishab','LN':'Shetty'},"RD":{"PR":['Maharashtra','Kerala','Karnataka','Gujrat'],"DR":["22-3-2022"],"rating":10}})
+WriteResult({ "nInserted" : 1 })
+
+
+
+3. Delete the film "Endgame" 
+db.film.deleteOne({title:"Endgame"})
+{ "acknowledged" : true, "deletedCount" : 1 }
+
+
+
+4. Delete an actor named "Salman Khan"
+
+ db.actor.deleteOne({$and:[{f_name:"Salman"},{l_name:"Khan"}]})
+{ "acknowledged" : true, "deletedCount" : 1 }
+
+
+
+5. Delete all actors from an „Actor‟ collection who have age greater than 50
+
+ db.actor.deleteMany({age:{$gt:50}})
+{ "acknowledged" : true, "deletedCount" : 0 }
+
+
+
+6. Update the actor‟s address where Actor Id is “13”. 
+db.actor.updateOne({a_id:13},{$set:{address:{street:"FC_road",city:"Mumbai",state:"Maharashtra",country:"india",pin_code:11111}}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+
+
+7. Update the genre of the film directed by “Ayan Mukerji”.
+
+db.film.updateOne({$and:[{"director.FN":"Ayan"}]},{$set:{genre:['Romantic']}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 } 
+
+
+8. Find the titles of all the films starting with the letter "R" released during the year 2009 and 2011. 
+ db.film.find($and:[{title:{$regex:"W"}},{$and:[{r_year:{$gt:2009}},{r_year:{$lt:20012}}]}]},{title:1})
+
+
+9. Find the list of films acted by an actor " ". 
+db.film.find({$and:[{"actor.FN":"Allu"},{"actor.LN":"Arjun"}]},{title:1})
+{ "_id" : ObjectId("63a1784d42a4b55afc0d106b"), "title" : "DJ" }
+{ "_id" : ObjectId("63a17a4642a4b55afc0d106c"), "title" : "Bramahstra" }
+
+
+10. Find all the films released in 90s 
+
+db.film.find({$and:[{r_year:{$gt:"1989"}},{r_year:{$lt:"2000"}}]},{title:1})
+{ "_id" : ObjectId("63aff311cf7ed38e53b207e8"), "title" : "Tango_Charlie" }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
