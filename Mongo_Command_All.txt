@@ -1,0 +1,46 @@
+Update Commands::
+      1)Rename the key Command:
+	    db.film.update({"filmid":8},{$rename:{"r_year":"R_years"}})
+	  
+	  2)Update value(rating) starts with particular Latter (T)
+         db.film.update({"title":{$regex:"T"}},{$set:{"RD.rating":300}})
+       3) db.film.findOneAndUpdate({"filmid":8},{$set:{"filmid":19}})
+	   4) Update Many and increment
+	      db.emp.update({},{$inc:{"salary":+40000}})
+	      
+DELETE::
+      db.fild.deleteOne({"director.FN":"Salman"})
+
+Clause Commands::
+      1) Equality
+           db.film.find({"filmid":{$eq:1}})
+      2)  less than
+            db.film.find({"filmid":{$lt:3}})
+      3) Greater Than
+            db.film.find({"filmid":{$gt:3}})
+      4)  less than equals			
+	        db.film.find({"filmid":{$lte:3}})
+	  5)  Greater than equals  
+	        db.film.find({"filmid":{$gte:3}})
+			
+Aggregation Commands::
+      1) sum
+	     db.film.aggregate([{$group:{_id:null,sum_id:{$sum:"$filmid"}}}])
+	  2) avg
+	     db.film.aggregate([{$group:{_id:null,sum_id:{$avg:"$filmid"}}}])
+	  3) max
+	      db.film.aggregate([{$group:{_id:null,sum_id:{$max:"$filmid"}}}])
+	  4) min
+	      db.film.aggregate([{$group:{_id:null,sum_id:{$min:"$filmid"}}}])
+sort::
+db.film.find.sort({"filmid":1})  #1: Ascending
+db.film.find.sort({"filmid":-1})  #1: Ascending
+
+AND::
+db.film.find({$and:[{"actor.FN":"Salman"},{"director.FN":"Vijay"}]}).pretty()
+
+OR::
+db.film.find({$or:[{"actor.FN":"Salman"},{"director.FN":"Vijay"}]}).pretty()
+
+NOT::
+db.film.find({"director.FN":{$not:{$eq:"Dhanush"}}})
